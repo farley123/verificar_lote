@@ -15,7 +15,7 @@ captura_em_andamento = True  # Variável para controlar o loop de captura
 # Função assíncrona para capturar a imagem da câmera e atualizar a interface do Flet
 def capturar_camera(img_output):
     global captura_em_andamento, capturas
-    cap = cv2.VideoCapture(1)  # Inicializa a câmera
+    cap = cv2.VideoCapture(0)  # Inicializa a câmera
     while captura_em_andamento:
         ret, frame = cap.read()
         if not ret:
@@ -79,7 +79,7 @@ def verificar_imagem(page:ft.Page):
     return ft.Container(
         width=1800,
         height=700,
-        visible=True,
+        visible=False,
 
         alignment=ft.alignment.top_center,
         content=ft.Column(

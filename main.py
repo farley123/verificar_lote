@@ -1,10 +1,6 @@
 
 import flet as ft
-from crop2 import Crop
 from selecao_tanques import selecao_tanques
-import cv2
-import base64
-
 from verificacao_imagem import verificar_imagem
 
 
@@ -12,6 +8,18 @@ def main(page: ft.Page):
     toggle:bool=False
     page.title = 'Verificação de carimbo linha SIG'
     page.window.full_screen=True
+
+
+    def mudar_para_verificacao_de_lote(e):
+        tela_selecao_de_tanques.visible = False
+        tela_verificacao_de_imagem.visible=True
+        page.update()
+
+
+    def mudar_para_selecao_de_tanque(e):
+        tela_selecao_de_tanques.visible=True
+        tela_verificacao_de_imagem.visible=False
+        page.update()
 
     def fullscreen(e):
         nonlocal toggle
@@ -36,11 +44,13 @@ def main(page: ft.Page):
                     ft.PopupMenuItem(text="Ir para:"),
                     ft.PopupMenuItem(),  # divider
                     ft.PopupMenuItem(
-                        text="Verificação de carimbos"
+                        text="Verificação de carimbos",
+                        on_click=mudar_para_verificacao_de_lote
                     ),
                     ft.PopupMenuItem(),  # divider
                     ft.PopupMenuItem(
-                        text="Seleção de tanques"
+                        text="Seleção de tanques",
+                        on_click=mudar_para_selecao_de_tanque
                     ),
                 ]
             ),
@@ -50,8 +60,8 @@ def main(page: ft.Page):
     principal = ft.Container(
         content=ft.Row(
             controls=[
-                selecao_tanques(page),
-                verificar_imagem(page)
+                tela_selecao_de_tanques:=selecao_tanques(page),
+                tela_verificacao_de_imagem:=verificar_imagem(page)
 
             ]
         )
@@ -59,7 +69,7 @@ def main(page: ft.Page):
 
     page.add(principal)
 
-    #page.run_task(capturar_camera, image_output)
+
 
 
 

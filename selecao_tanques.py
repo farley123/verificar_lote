@@ -168,7 +168,7 @@ def selecao_tanques(page:ft.Page)->ft.Column:
 
     return ft.Column(
 
-                    visible=False,
+                    visible=True,
 
                     controls=[
                         ft.Row(
