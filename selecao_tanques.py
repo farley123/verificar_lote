@@ -3,6 +3,7 @@ import datetime
 from dateutil.relativedelta import relativedelta
 
 def selecao_tanques(page:ft.Page)->ft.Column:
+    tanque_selecionado:str=''
     def clear():
         data_result.value = ''
         validade_result.value = ''
@@ -12,7 +13,7 @@ def selecao_tanques(page:ft.Page)->ft.Column:
         page.update()
 
     def ativar_botao_carregar_modelo(e):
-        if digito.value != ' ' and produtos.value != ' ':
+        if digito.value != ' ' and produtos.value != ' ' and tanque_selecionado:
             iniciar_modelo.visible = True
             page.update()
         else:
@@ -73,6 +74,7 @@ def selecao_tanques(page:ft.Page)->ft.Column:
         iniciar_modelo.visible = False
         digito.disabled = False
         produtos.disabled = False
+        nonlocal tanque_selecionado
         match e.control.data:
             case 'T901':
                 preencher_campos('1')
@@ -88,6 +90,7 @@ def selecao_tanques(page:ft.Page)->ft.Column:
                 t905.text = 'Parado'
                 t906.bgcolor = ft.Colors.BLACK
                 t906.text = 'Parado'
+                tanque_selecionado='T901'
                 page.update()
 
             case 'T902':
@@ -104,6 +107,7 @@ def selecao_tanques(page:ft.Page)->ft.Column:
                 t905.text = 'Parado'
                 t906.bgcolor = ft.Colors.BLACK
                 t906.text = 'Parado'
+                tanque_selecionado='T902'
                 page.update()
             case 'T903':
                 preencher_campos('3')
@@ -119,6 +123,7 @@ def selecao_tanques(page:ft.Page)->ft.Column:
                 t905.text = 'Parado'
                 t906.bgcolor = ft.Colors.BLACK
                 t906.text = 'Parado'
+                tanque_selecionado='T903'
                 page.update()
             case 'T904':
                 preencher_campos('4')
@@ -134,6 +139,7 @@ def selecao_tanques(page:ft.Page)->ft.Column:
                 t905.text = 'Parado'
                 t906.bgcolor = ft.Colors.BLACK
                 t906.text = 'Parado'
+                tanque_selecionado='T904'
                 page.update()
             case 'T905':
                 preencher_campos('5')
@@ -149,6 +155,7 @@ def selecao_tanques(page:ft.Page)->ft.Column:
                 t901.text = 'Parado'
                 t906.bgcolor = ft.Colors.BLACK
                 t906.text = 'Parado'
+                tanque_selecionado='T905'
                 page.update()
             case 'T906':
                 preencher_campos('6')
@@ -164,6 +171,7 @@ def selecao_tanques(page:ft.Page)->ft.Column:
                 t905.text = 'Parado'
                 t901.bgcolor = ft.Colors.BLACK
                 t901.text = 'Parado'
+                tanque_selecionado='T906'
                 page.update()
 
     return ft.Column(
