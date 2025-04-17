@@ -81,7 +81,7 @@ def verificar_imagem(page:ft.Page):
         height=700,
         visible=False,
 
-        alignment=ft.alignment.top_center,
+        alignment=ft.alignment.top_left,
         content=ft.Column(
             controls=[
 
