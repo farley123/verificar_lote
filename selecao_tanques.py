@@ -31,7 +31,7 @@ def selecao_tanques(page:ft.Page)->ft.Column:
             case 'light':
                 return datetime.date(day=1, month=validade_light.month, year=validade_light.year)
             case 'zero lactose':
-                return datetime.date(day=1, month=validade_zero.month, year=validade_zero.year)
+                return datetime.date(day=validade_zero.day, month=validade_zero.month, year=validade_zero.year)
             case _:
                 return datetime.date(0, 0, 0)
 
