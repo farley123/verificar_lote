@@ -8,7 +8,7 @@ import flet as ft
 capturas = []
 captura_em_andamento = True  # Variável para controlar o loop de captura
 
-# Função para capturar a imagem da câmera
+visualizar_area_de_crop:bool=False
 
 
 
@@ -42,25 +42,9 @@ def capturar_camera(img_output):
     cap.release()
 
 
-# Função assíncrona para capturar uma foto e salvar
-def tirar_foto(img_output):
-    global capturas, captura_em_andamento
-    if capturas:
-        # Pega o último quadro da lista de capturas
-        captura = capturas[-1]
-
-        # Salva a foto
-        filename = f"foto_capturada.jpg"  # Nome único para cada foto
-        cv2.imwrite(filename, captura)  # Salva a imagem capturada
 
 
-        # Exibe a foto capturada
-        img_output.src_base64 = base64.b64encode(cv2.imencode('.jpg', captura)[1].tobytes()).decode('utf-8')
 
-        img_output.update()
-
-        # Pausa o loop da câmera
-        captura_em_andamento = False
 
 
 # Função assíncrona para reiniciar a câmera
@@ -71,16 +55,41 @@ def  reiniciar_camera(img_output):
     # Chama a função de captura da câmera de forma assíncrona
     capturar_camera(img_output)
 
+
 def verificar_imagem(page:ft.Page):
     crop = Crop(page)
+
+    def habilitar_area_de_crop():
+        gesture.content.visible = True
+        page.update()
+
+    def tirar_foto(img_output):
+        global capturas, captura_em_andamento
+        if capturas:
+            # Pega o último quadro da lista de capturas
+            captura = capturas[-1]
+
+            # Salva a foto
+            filename = f"foto_capturada.jpg"  # Nome único para cada foto
+            cv2.imwrite(filename, captura)  # Salva a imagem capturada
+
+            # Exibe a foto capturada
+            img_output.src_base64 = base64.b64encode(cv2.imencode('.jpg', captura)[1].tobytes()).decode('utf-8')
+
+            img_output.update()
+            habilitar_area_de_crop()
+            # Pausa o loop da câmera
+            captura_em_andamento = False
+
+
+
+
     image_output = ft.Image(fit=ft.ImageFit.FILL)
     imagem_cortada = ft.Image(src='assets/imagem_cortada.jpg')
-
     return ft.Container(
         width=1800,
         height=700,
         visible=False,
-
         alignment=ft.alignment.top_left,
         content=ft.Column(
             controls=[
@@ -118,9 +127,8 @@ def verificar_imagem(page:ft.Page):
                                                                      on_click=lambda e: crop.crop_picture(imagem_cortada,
                                                                                                           gesture)),
                                     capture_button := ft.ElevatedButton(text="Capturar Foto",
-                                                                        on_click=lambda e: tirar_foto(
-                                                                            image_output)),
-                                    start_button := ft.ElevatedButton(text="Reiniciar Câmera",
+                                                                        on_click=lambda e:tirar_foto(image_output)),
+                                    inicar_camera := ft.ElevatedButton(text="Reiniciar Câmera",
                                                                       on_click=lambda e: reiniciar_camera(image_output)),
 
                                 ]
