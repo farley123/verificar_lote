@@ -14,7 +14,15 @@ class Crop:
         self.top_area = 0
         self.left_area = 0
 
+    def habilitar_crop(self,gesture:ft.GestureDetector):
+        gesture.disabled=False,
+        gesture.content.visible=True
+        self.page.update()
 
+    def desabilitar_crop(self,gesture:ft.GestureDetector):
+        gesture.disabled=True
+        gesture.content.visible=False
+        self.page.update()
 
     def esperar_foto_ser_salva(self,path,timeout=2):
         start=time.time()
@@ -30,6 +38,7 @@ class Crop:
         drag_interval=10,
         top=10,
         left=10,
+        disabled=True,
         mouse_cursor=MouseCursor.MOVE,
         on_pan_update=self.changeposition,
         content=ft.Container(
