@@ -8,6 +8,7 @@ import flet as ft
 
 
 
+
 def verificar_imagem(page:ft.Page):
     crop = Crop(page)
 
@@ -17,42 +18,60 @@ def verificar_imagem(page:ft.Page):
     capturas = []
     captura_em_andamento = True  # Variável para controlar o loop de captura
 
-    visualizar_area_de_crop: bool = False
 
-    # Função assíncrona para capturar a imagem da câmera e atualizar a interface do Flet
     def capturar_camera(img_output):
+
         crop.desabilitar_crop(gesture)
         nonlocal captura_em_andamento, capturas
+        if captura_em_andamento:
+            print('captura em andamente,ignorando')
+        #desabilita o botao de tirar foto para que o usuario nao ligue a camera já ligada
+        inicar_camera.disabled = True
+        inicar_camera.visible = False
+        page.update()
         cap = cv2.VideoCapture(0)  # Inicializa a câmera
-        while captura_em_andamento:
-            ret, frame = cap.read()
-            if not ret:
-                break
+        #verificar se a camera realmente iniciou
+        if not cap.isOpened():
+            print('erro ao abrir a camera')
+            return
+        try:
+            while captura_em_andamento:
+                ret, frame = cap.read()
+                if not ret:
+                    break
 
-            # Não converte para RGB, mantém em BGR, que é o padrão do OpenCV
-            frame_bgr = frame
+                # Não converte para RGB, mantém em BGR, que é o padrão do OpenCV
+                frame_bgr = frame
 
-            # Converte a imagem para JPEG e depois para base64
-            _, buffer = cv2.imencode('.jpg', frame_bgr)
-            img_bytes = buffer.tobytes()
-            img_base64 = base64.b64encode(img_bytes).decode('utf-8')
+                # Converte a imagem para JPEG e depois para base64
+                _, buffer = cv2.imencode('.jpg', frame_bgr)
+                img_bytes = buffer.tobytes()
+                img_base64 = base64.b64encode(img_bytes).decode('utf-8')
 
-            # Atualiza a imagem no app Flet de forma assíncrona
-            img_output.src_base64 = img_base64
-            img_output.update()
+                # Atualiza a imagem no app Flet de forma assíncrona
+                img_output.src_base64 = img_base64
+                img_output.update()
 
-            # Armazena o quadro atual na lista (se necessário)
-            capturas.append(frame)
+                # Armazena o quadro atual na lista (se necessário)
+                capturas.append(frame)
+        except Exception as e:
+            print(f"Erro durante captura: {e}")
 
-        cap.release()
+        finally:
+            captura_em_andamento = False
+            if 'cap' in locals() and cap.isOpened():
+                try:
+                    cap.release()
+                except cv2.error as e:
+                    print(f"Erro ao liberar câmera: {e}")
 
     # Função assíncrona para reiniciar a câmera
     def reiniciar_camera(img_output):
         nonlocal captura_em_andamento, capturas
         captura_em_andamento = True  # Reinicia o controle do loop de captura
-        capturas = []  # Limpa as capturas anteriores
-        # Chama a função de captura da câmera de forma assíncrona
+        capturas.clear()
         capturar_camera(img_output)
+
 
 
     def tirar_foto(img_output):
@@ -72,6 +91,10 @@ def verificar_imagem(page:ft.Page):
             crop.habilitar_crop(gesture)
             # Pausa o loop da câmera
             captura_em_andamento = False
+            #após tirar a foto habilita ligar a camera novamente
+            inicar_camera.disabled = False
+            inicar_camera.visible = True
+            page.update()
 
 
     return ft.Container(
