@@ -8,6 +8,8 @@ def main(page: ft.Page):
     toggle:bool=False
     page.title = 'Verificação de carimbo linha SIG'
     page.window.full_screen=True
+    page.padding=0
+    page.spacing=0
 
 
     def mudar_para_verificacao_de_lote(e):
@@ -58,10 +60,23 @@ def main(page: ft.Page):
     )
 
     principal = ft.Container(
-        content=ft.Row(
+        expand=True,
+        content=ft.ResponsiveRow(
+            expand=True,
             controls=[
-                tela_selecao_de_tanques:=selecao_tanques(page),
-                tela_verificacao_de_imagem:=verificar_imagem(page)
+                ft.Column(
+                    expand=True,
+                    controls=[
+                        ft.ResponsiveRow(
+                            expand=True,
+                            controls=[
+                                tela_selecao_de_tanques := selecao_tanques(page),
+                                tela_verificacao_de_imagem := verificar_imagem(page)
+                            ]
+                        )
+                    ]
+                )
+
 
             ]
         )

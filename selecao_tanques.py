@@ -177,52 +177,55 @@ def selecao_tanques(page:ft.Page)->ft.Column:
     return ft.Column(
 
                     visible=True,
-
+                    expand=True,
                     controls=[
-                        ft.Row(
-                            controls=[
-                                data := ft.TextField(width=100, value='', label='data', read_only=True),
-                                planta := ft.TextField(width=100, value='', label='planta da fabrica',
-                                                       read_only=True),
-                                digito := ft.Dropdown(
-                                    label='digito',
-                                    on_change=ativar_botao_carregar_modelo,
-                                    options=[
-                                        ft.DropdownOption(text=' '),
-                                        ft.DropdownOption(text='0'),
-                                        ft.DropdownOption(text='A'),
-                                        ft.DropdownOption(text='B'),
-                                        ft.DropdownOption(text='C'),
-                                        ft.DropdownOption(text='D'),
-                                        ft.DropdownOption(text='E'),
-                                    ]
-                                ),
-                                lote := ft.TextField(width=200, value='', label='lote', read_only=True),
 
-                                produtos := ft.Dropdown(
-                                    label='produto',
-                                    on_change=ativar_botao_carregar_modelo,
-                                    options=[
-                                        ft.DropdownOption(text=' '),
-                                        ft.DropdownOption(text='zero lactose'),
-                                        ft.DropdownOption(text='light'),
-                                        ft.DropdownOption(text='4%'),
-                                    ]
-                                ),
-                                iniciar_modelo := ft.IconButton(
-                                    bgcolor=ft.Colors.GREEN,
-                                    icon=ft.Icons.PLAY_ARROW,
-                                    on_click=carregar_modelo,
-                                    visible=False
-
-                                )
-
-                            ]
-                        ),
                         ft.Container(
-                            image=ft.DecorationImage(src='assets/fundo.png'),
+                            expand=True,
+                            padding=ft.padding.all(10),
+                            image=ft.DecorationImage(src='assets/fundo.png',fit=ft.ImageFit.COVER,opacity=0.5),
                             content=ft.Column(
                                 controls=[
+                                    ft.Row(
+                                        controls=[
+                                            data := ft.TextField(width=100, value='', label='data', read_only=True),
+                                            planta := ft.TextField(width=100, value='', label='planta da fabrica',
+                                                                   read_only=True),
+                                            digito := ft.Dropdown(
+                                                label='digito',
+                                                on_change=ativar_botao_carregar_modelo,
+                                                options=[
+                                                    ft.DropdownOption(text=' '),
+                                                    ft.DropdownOption(text='0'),
+                                                    ft.DropdownOption(text='A'),
+                                                    ft.DropdownOption(text='B'),
+                                                    ft.DropdownOption(text='C'),
+                                                    ft.DropdownOption(text='D'),
+                                                    ft.DropdownOption(text='E'),
+                                                ]
+                                            ),
+                                            lote := ft.TextField(width=200, value='', label='lote', read_only=True),
+
+                                            produtos := ft.Dropdown(
+                                                label='produto',
+                                                on_change=ativar_botao_carregar_modelo,
+                                                options=[
+                                                    ft.DropdownOption(text=' '),
+                                                    ft.DropdownOption(text='zero lactose'),
+                                                    ft.DropdownOption(text='light'),
+                                                    ft.DropdownOption(text='4%'),
+                                                ]
+                                            ),
+                                            iniciar_modelo := ft.IconButton(
+                                                bgcolor=ft.Colors.GREEN,
+                                                icon=ft.Icons.PLAY_ARROW,
+                                                on_click=carregar_modelo,
+                                                visible=False
+
+                                            )
+
+                                        ]
+                                    ),
                                     ft.Row(
                                         controls=[
                                             ft.Stack(
@@ -357,35 +360,44 @@ def selecao_tanques(page:ft.Page)->ft.Column:
 
                                                 ]
                                             ),
-                                                                                    ]
-                                    )
-                                ]
-                            )
-                        ),
-                        modelo_carimbo := ft.Container(
-                            content=ft.Column(
-                                controls=[
-                                    ft.Text(value="Padrão", size=50),
-                                    ft.Container(
-                                        width=600,
-                                        height=230,
-                                        border_radius=10,
-                                        bgcolor=ft.Colors.BLUE,
-                                        padding=ft.padding.only(left=10, top=10),
-                                        content=ft.Column(
-                                            controls=[
-                                                ft.Row(
-                                                    controls=[ft.Text(value='VÁLIDO ATÉ/VALIDO HASTA/LOTE:', size=30)]),
-                                                ft.Row(controls=[validade_result := ft.Text(size=30)]),
-                                                ft.Row(controls=[data_result := ft.Text(size=30)]),
-                                                ft.Row(controls=[fabricacao_result := ft.Text(size=30)])
+                                        ]
+                                    ),
+                                    ft.Row(
+                                        controls=[
+                                            modelo_carimbo := ft.Container(
+                                                content=ft.Column(
+                                                    controls=[
+                                                        ft.Text(value="Padrão", size=50),
+                                                        ft.Container(
+                                                            width=600,
+                                                            height=230,
+                                                            border_radius=10,
+                                                            bgcolor=ft.Colors.BLUE,
+                                                            padding=ft.padding.only(left=10, top=10),
+                                                            content=ft.Column(
+                                                                controls=[
+                                                                    ft.Row(
+                                                                        controls=[ft.Text(
+                                                                            value='VÁLIDO ATÉ/VALIDO HASTA/LOTE:',
+                                                                            size=30)]),
+                                                                    ft.Row(
+                                                                        controls=[validade_result := ft.Text(size=30)]),
+                                                                    ft.Row(controls=[data_result := ft.Text(size=30)]),
+                                                                    ft.Row(controls=[
+                                                                        fabricacao_result := ft.Text(size=30)])
 
-                                            ]
-                                        )
+                                                                ]
+                                                            )
+                                                        )
+                                                    ]
+                                                )
+                                            ),
+                                        ]
                                     )
                                 ]
                             )
                         ),
+
                     ]
                 )
 

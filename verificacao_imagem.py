@@ -98,56 +98,81 @@ def verificar_imagem(page:ft.Page):
 
 
     return ft.Container(
-        width=1800,
-        height=700,
         visible=False,
-        alignment=ft.alignment.top_left,
+        expand=True,
+        alignment=ft.alignment.center,
         content=ft.Column(
+
             controls=[
 
                 ft.Container(
-                    width=920,
-                    height=670,
-
+                    padding=ft.padding.all(15),
+                    expand=True,
+                    bgcolor=ft.Colors.BLACK,
                     content=ft.Column(
-                        alignment=ft.alignment.top_left,
-                        offset=(-0.01, 0),
+
+
                         controls=[
                             ft.Row(
-
+                                alignment=ft.MainAxisAlignment.SPACE_AROUND,
                                 controls=[
-                                    ft.Stack(
-
+                                    ft.Column(
                                         controls=[
-                                            ft.Container(width=640, height=480,
-                                                         content=image_output,
-                                                         bgcolor='pink', margin=ft.margin.only(left=10)),
-                                            gesture := crop.criar_gesture_detector()
+                                            ft.Row(
+                                                controls=[
+                                                    ft.Stack(
+
+                                                        controls=[
+                                                            ft.Container(width=640, height=480,
+                                                                         content=image_output,
+                                                                         bgcolor='pink',
+                                                                         margin=ft.margin.only(left=10)),
+                                                            gesture := crop.criar_gesture_detector()
+                                                        ]
+                                                    ),
+                                                    ft.Container(
+                                                        width=640, height=480, bgcolor=ft.Colors.PINK,
+                                                        content=imagem_cortada
+                                                    ),
+                                                ]
+                                            ),
+
+                                            ft.Row(
+
+                                                alignment=ft.MainAxisAlignment.START,
+                                                controls=[
+                                                    crop_button := ft.ElevatedButton(icon=ft.Icons.CROP_5_4,
+                                                                                     text="cortar a foto",
+                                                                                     bgcolor=ft.Colors.RED,
+                                                                                     on_click=lambda
+                                                                                         e: crop.crop_picture(
+                                                                                         imagem_cortada,
+                                                                                         gesture)),
+                                                    capture_button := ft.ElevatedButton(icon=ft.Icons.CAMERA,
+                                                                                        text="Tirar a foto",
+                                                                                        on_click=lambda e: tirar_foto(
+                                                                                            image_output)),
+                                                    inicar_camera := ft.ElevatedButton(icon=ft.Icons.START,
+                                                                                       text="Ligar a câmera",
+                                                                                       on_click=lambda
+                                                                                           e: reiniciar_camera(
+                                                                                           image_output)),
+
+                                                ]
+                                            ),
                                         ]
                                     ),
-                                    ft.Container(
-                                        width=640, height=480, bgcolor=ft.Colors.PINK,
-                                        content=imagem_cortada
-                                    )
+
+
 
                                 ]
                             ),
-                            ft.Row(
-                                controls=[
-                                    crop_button := ft.ElevatedButton(icon=ft.Icons.CROP_5_4,text="cortar a foto", bgcolor=ft.Colors.RED,
-                                                                     on_click=lambda e: crop.crop_picture(imagem_cortada,
-                                                                                                          gesture)),
-                                    capture_button := ft.ElevatedButton(icon=ft.Icons.CAMERA,text="Tirar a foto",
-                                                                        on_click=lambda e:tirar_foto(image_output)),
-                                    inicar_camera := ft.ElevatedButton(icon=ft.Icons.START,text="Ligar a câmera",
-                                                                      on_click=lambda e: reiniciar_camera(image_output)),
 
-                                ]
-                            )
 
                         ]
                     )
                 ),
+
 
             ]
         )
