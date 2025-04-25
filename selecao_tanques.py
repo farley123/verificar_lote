@@ -227,141 +227,180 @@ def selecao_tanques(page:ft.Page)->ft.Column:
                                         ]
                                     ),
                                     ft.Row(
+                                        spacing=200,
+
                                         controls=[
-                                            ft.Stack(
-                                                alignment=ft.alignment.center,
+                                            ft.Column(
                                                 controls=[
-                                                    ft.Image(src="assets/tanque.png", repeat=ft.ImageRepeat.NO_REPEAT,
-                                                             width=200, height=200),
-                                                    ft.Column(
-                                                        alignment=ft.alignment.center,
+                                                    ft.Row(
                                                         controls=[
-                                                            ft.Text(
-                                                                value='T901',
-                                                                style=ft.TextStyle(color=ft.Colors.BLACK, italic=True,
-                                                                                   decoration_thickness=5),
-                                                                offset=ft.Offset(x=0.6, y=0)
+                                                            ft.Stack(
+                                                                alignment=ft.alignment.center,
+                                                                controls=[
+                                                                    ft.Image(src="assets/tanque.png",
+                                                                             repeat=ft.ImageRepeat.NO_REPEAT,
+                                                                             width=200, height=200),
+                                                                    ft.Column(
+                                                                        alignment=ft.alignment.center,
+                                                                        controls=[
+                                                                            ft.Text(
+                                                                                value='T901',
+                                                                                style=ft.TextStyle(
+                                                                                    color=ft.Colors.BLACK,
+                                                                                    italic=True,
+                                                                                    decoration_thickness=5),
+                                                                                offset=ft.Offset(x=0.6, y=0)
+                                                                            ),
+                                                                            t901 := ft.Button(text="parado",
+                                                                                              on_click=escolher_tanque,
+                                                                                              data='T901'),
+                                                                        ]
+                                                                    )
+
+                                                                ]
                                                             ),
-                                                            t901 := ft.Button(text="parado", on_click=escolher_tanque,
-                                                                              data='T901'),
+                                                            ft.Stack(
+                                                                alignment=ft.alignment.center,
+                                                                controls=[
+
+                                                                    ft.Image(src="assets/tanque.png",
+                                                                             repeat=ft.ImageRepeat.NO_REPEAT,
+                                                                             width=200, height=200),
+                                                                    ft.Column(
+                                                                        alignment=ft.alignment.center,
+                                                                        controls=[
+                                                                            ft.Text(
+                                                                                value='T902',
+                                                                                style=ft.TextStyle(
+                                                                                    color=ft.Colors.BLACK,
+                                                                                    italic=True,
+                                                                                    decoration_thickness=5),
+                                                                                offset=ft.Offset(x=0.6, y=0)
+                                                                            ),
+                                                                            t902 := ft.Button(text="parado",
+                                                                                              on_click=escolher_tanque,
+                                                                                              data='T902'),
+                                                                        ]
+                                                                    )
+
+                                                                ]
+                                                            ),
+                                                            ft.Stack(
+                                                                alignment=ft.alignment.center,
+                                                                controls=[
+                                                                    ft.Image(src="assets/tanque.png",
+                                                                             repeat=ft.ImageRepeat.NO_REPEAT,
+                                                                             width=200, height=200),
+                                                                    ft.Column(
+                                                                        alignment=ft.alignment.center,
+                                                                        controls=[
+                                                                            ft.Text(
+                                                                                value='T903',
+                                                                                style=ft.TextStyle(
+                                                                                    color=ft.Colors.BLACK,
+                                                                                    italic=True,
+                                                                                    decoration_thickness=5),
+                                                                                offset=ft.Offset(x=0.6, y=0)
+                                                                            ),
+                                                                            t903 := ft.Button(text="parado",
+                                                                                              on_click=escolher_tanque,
+                                                                                              data='T903'),
+                                                                        ]
+                                                                    )
+
+                                                                ]
+                                                            ),
+
                                                         ]
-                                                    )
+                                                    ),
+                                                    ft.Row(
+                                                        controls=[
+                                                            ft.Stack(
+                                                                alignment=ft.alignment.center,
+                                                                controls=[
+                                                                    ft.Image(src="assets/tanque.png",
+                                                                             repeat=ft.ImageRepeat.NO_REPEAT,
+                                                                             width=200, height=200),
+                                                                    ft.Column(
+                                                                        alignment=ft.alignment.center,
+                                                                        controls=[
+                                                                            ft.Text(
+                                                                                value='T904',
+                                                                                style=ft.TextStyle(
+                                                                                    color=ft.Colors.BLACK,
+                                                                                    italic=True,
+                                                                                    decoration_thickness=5),
+                                                                                offset=ft.Offset(x=0.6, y=0)
+                                                                            ),
+                                                                            t904 := ft.Button(text="parado",
+                                                                                              on_click=escolher_tanque,
+                                                                                              data='T904'),
+                                                                        ]
+                                                                    )
+
+                                                                ]
+                                                            ),
+                                                            ft.Stack(
+                                                                alignment=ft.alignment.center,
+                                                                controls=[
+                                                                    ft.Image(src="assets/tanque.png",
+                                                                             repeat=ft.ImageRepeat.NO_REPEAT,
+                                                                             width=200, height=200),
+                                                                    ft.Column(
+                                                                        alignment=ft.alignment.center,
+                                                                        controls=[
+                                                                            ft.Text(
+                                                                                value='T905',
+                                                                                style=ft.TextStyle(
+                                                                                    color=ft.Colors.BLACK,
+                                                                                    italic=True,
+                                                                                    decoration_thickness=5),
+                                                                                offset=ft.Offset(x=0.6, y=0)
+                                                                            ),
+                                                                            t905 := ft.Button(text="parado",
+                                                                                              on_click=escolher_tanque,
+                                                                                              data='T905'),
+                                                                        ]
+                                                                    )
+
+                                                                ]
+                                                            ),
+                                                            ft.Stack(
+                                                                alignment=ft.alignment.center,
+                                                                controls=[
+                                                                    ft.Image(src="assets/tanque.png",
+                                                                             repeat=ft.ImageRepeat.NO_REPEAT,
+                                                                             width=200, height=200),
+                                                                    ft.Column(
+                                                                        alignment=ft.alignment.center,
+                                                                        controls=[
+                                                                            ft.Text(
+                                                                                value='T906',
+                                                                                style=ft.TextStyle(
+                                                                                    color=ft.Colors.BLACK,
+                                                                                    italic=True,
+                                                                                    decoration_thickness=5),
+                                                                                offset=ft.Offset(x=0.6, y=0)
+                                                                            ),
+                                                                            t906 := ft.Button(text="parado",
+                                                                                              on_click=escolher_tanque,
+                                                                                              data='T906'),
+                                                                        ]
+                                                                    )
+
+                                                                ]
+                                                            ),
+                                                        ]
+                                                    ),
 
                                                 ]
                                             ),
-                                            ft.Stack(
-                                                alignment=ft.alignment.center,
-                                                controls=[
+                                            ft.Container(width=600,height=415,bgcolor=ft.Colors.RED)
 
-                                                    ft.Image(src="assets/tanque.png", repeat=ft.ImageRepeat.NO_REPEAT,
-                                                             width=200, height=200),
-                                                    ft.Column(
-                                                        alignment=ft.alignment.center,
-                                                        controls=[
-                                                            ft.Text(
-                                                                value='T902',
-                                                                style=ft.TextStyle(color=ft.Colors.BLACK, italic=True,
-                                                                                   decoration_thickness=5),
-                                                                offset=ft.Offset(x=0.6, y=0)
-                                                            ),
-                                                            t902 := ft.Button(text="parado", on_click=escolher_tanque,
-                                                                              data='T902'),
-                                                        ]
-                                                    )
-
-                                                ]
-                                            ),
-                                            ft.Stack(
-                                                alignment=ft.alignment.center,
-                                                controls=[
-                                                    ft.Image(src="assets/tanque.png", repeat=ft.ImageRepeat.NO_REPEAT,
-                                                             width=200, height=200),
-                                                    ft.Column(
-                                                        alignment=ft.alignment.center,
-                                                        controls=[
-                                                            ft.Text(
-                                                                value='T903',
-                                                                style=ft.TextStyle(color=ft.Colors.BLACK, italic=True,
-                                                                                   decoration_thickness=5),
-                                                                offset=ft.Offset(x=0.6, y=0)
-                                                            ),
-                                                            t903 := ft.Button(text="parado", on_click=escolher_tanque,
-                                                                              data='T903'),
-                                                        ]
-                                                    )
-
-                                                ]
-                                            ),
 
                                         ]
                                     ),
-                                    ft.Row(
-                                        controls=[
-                                            ft.Stack(
-                                                alignment=ft.alignment.center,
-                                                controls=[
-                                                    ft.Image(src="assets/tanque.png", repeat=ft.ImageRepeat.NO_REPEAT,
-                                                             width=200, height=200),
-                                                    ft.Column(
-                                                        alignment=ft.alignment.center,
-                                                        controls=[
-                                                            ft.Text(
-                                                                value='T904',
-                                                                style=ft.TextStyle(color=ft.Colors.BLACK, italic=True,
-                                                                                   decoration_thickness=5),
-                                                                offset=ft.Offset(x=0.6, y=0)
-                                                            ),
-                                                            t904 := ft.Button(text="parado", on_click=escolher_tanque,
-                                                                              data='T904'),
-                                                        ]
-                                                    )
 
-                                                ]
-                                            ),
-                                            ft.Stack(
-                                                alignment=ft.alignment.center,
-                                                controls=[
-                                                    ft.Image(src="assets/tanque.png", repeat=ft.ImageRepeat.NO_REPEAT,
-                                                             width=200, height=200),
-                                                    ft.Column(
-                                                        alignment=ft.alignment.center,
-                                                        controls=[
-                                                            ft.Text(
-                                                                value='T905',
-                                                                style=ft.TextStyle(color=ft.Colors.BLACK, italic=True,
-                                                                                   decoration_thickness=5),
-                                                                offset=ft.Offset(x=0.6, y=0)
-                                                            ),
-                                                            t905 := ft.Button(text="parado", on_click=escolher_tanque,
-                                                                              data='T905'),
-                                                        ]
-                                                    )
-
-                                                ]
-                                            ),
-                                            ft.Stack(
-                                                alignment=ft.alignment.center,
-                                                controls=[
-                                                    ft.Image(src="assets/tanque.png", repeat=ft.ImageRepeat.NO_REPEAT,
-                                                             width=200, height=200),
-                                                    ft.Column(
-                                                        alignment=ft.alignment.center,
-                                                        controls=[
-                                                            ft.Text(
-                                                                value='T906',
-                                                                style=ft.TextStyle(color=ft.Colors.BLACK, italic=True,
-                                                                                   decoration_thickness=5),
-                                                                offset=ft.Offset(x=0.6, y=0)
-                                                            ),
-                                                            t906 := ft.Button(text="parado", on_click=escolher_tanque,
-                                                                              data='T906'),
-                                                        ]
-                                                    )
-
-                                                ]
-                                            ),
-                                        ]
-                                    ),
                                     ft.Row(
                                         controls=[
                                             modelo_carimbo := ft.Container(
@@ -392,6 +431,8 @@ def selecao_tanques(page:ft.Page)->ft.Column:
                                                     ]
                                                 )
                                             ),
+
+
                                         ]
                                     )
                                 ]
