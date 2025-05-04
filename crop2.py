@@ -1,3 +1,4 @@
+import cv2
 import flet as ft
 from flet.core.gesture_detector import GestureDetector, DragUpdateEvent
 from flet.core.types import MouseCursor
@@ -6,6 +7,8 @@ import time
 import os
 import io
 import base64
+from ocr import ocr
+import numpy as np
 
 
 class Crop:
@@ -13,6 +16,36 @@ class Crop:
         self.page = page
         self.top_area = 0
         self.left_area = 0
+        self.largura_area_corte:float=100
+        self.altura_area_corte: float = 100
+        self.imagem_width=640
+        self.imagem_height=480
+        self.left=0
+        self.right=0
+        self.bottom=0
+        self.top=0
+
+    def resetar_crop(self,slider_largura:ft.Slider,slider_altura:ft.Slider,gesture_detector:ft.GestureDetector):
+        self.left_area = 10
+        self.top_area = 10
+        self.largura_area_corte = 100
+        self.altura_area_corte = 100
+
+        gesture_detector.left = self.left_area
+        gesture_detector.top = self.top_area
+        gesture_detector.content.width = self.largura_area_corte
+        gesture_detector.content.height = self.altura_area_corte
+        gesture_detector.update()
+
+        slider_largura.max = self.imagem_width - self.left_area
+        slider_largura.value = self.largura_area_corte
+        slider_largura.update()
+
+        slider_altura.max = self.imagem_height - self.top_area
+        slider_altura.value = self.altura_area_corte
+        slider_altura.update()
+
+        self.page.update()
 
     def habilitar_crop(self,gesture:ft.GestureDetector):
         gesture.disabled=False,
@@ -43,17 +76,18 @@ class Crop:
         on_pan_update=self.changeposition,
         content=ft.Container(
             border=ft.border.all(5, ft.Colors.RED),
-            width=345,
-            height=155,
+            width=self.largura_area_corte,
+            height=self.altura_area_corte,
             visible=False
 
         )
     )
 
+
     def changeposition(self, e: DragUpdateEvent):
         # Tamanho da imagem base (o limite)
-        imagem_width = 640
-        imagem_height = 480
+        self.imagem_width = 640
+        self.imagem_height = 480
 
         # Tamanho do container de corte
         box_width = e.control.content.width
@@ -66,8 +100,8 @@ class Crop:
         new_left = e.control.left + e.delta_x
 
         # Limitar para não sair da área da imagem
-        e.control.top = max(0, min(new_top, imagem_height - box_height))
-        e.control.left = max(margem_esquerda, min(new_left, imagem_width + margem_esquerda - box_width))
+        e.control.top = max(0, min(new_top, self.imagem_height - box_height))
+        e.control.left = max(margem_esquerda, min(new_left, self.imagem_width + margem_esquerda - box_width))
 
         # Atualizar variáveis
         self.top_area = e.control.top
@@ -75,7 +109,7 @@ class Crop:
 
         self.page.update()
 
-    def crop_picture(self, imagem: ft.Image, gesture_detector: ft.GestureDetector):
+    def crop_picture(self, imagem: ft.Image, gesture_detector: ft.GestureDetector,slider_largura,slider_altura):
         try:
             # Esconder temporariamente o componente de crop
             gesture_detector.content.visible = True
@@ -89,27 +123,27 @@ class Crop:
             img_width_real, img_height_real = fullscreen.size
 
             # Tamanho da imagem exibida no app
-            img_width_visivel = 640
-            img_height_visivel = 480
+            self.imagem_width = 640
+            self.imagem_height = 480
 
             # Fatores de escala entre imagem exibida e imagem real
-            fator_x = img_width_real / img_width_visivel
-            fator_y = img_height_real / img_height_visivel
+            fator_x = img_width_real / self.imagem_width
+            fator_y = img_height_real / self.imagem_height
 
             # Margem lateral que desloca a imagem no layout
             margem_esquerda = 10
 
             # Coordenadas do container de crop no layout Flet
-            left = (self.left_area - margem_esquerda) * fator_x
-            top = self.top_area * fator_y
-            right = left + gesture_detector.content.width * fator_x
-            bottom = top + gesture_detector.content.height * fator_y
-
+            self.left = (self.left_area - margem_esquerda) * fator_x
+            self.top = self.top_area * fator_y
+            self.right = self.left + self.largura_area_corte * fator_x
+            self.bottom = self.top + self.altura_area_corte * fator_y
+            print('largura area de corte:',self.largura_area_corte)
             # Arredonda e limita dentro da imagem real
-            left = int(round(max(0, min(left, img_width_real))))
-            right = int(round(max(0, min(right, img_width_real))))
-            top = int(round(max(0, min(top, img_height_real))))
-            bottom = int(round(max(0, min(bottom, img_height_real))))
+            left = int(round(max(0, min(self.left, img_width_real))))
+            right = int(round(max(0, min(self.right, img_width_real))))
+            top = int(round(max(0, min(self.top, img_height_real))))
+            bottom = int(round(max(0, min(self.bottom, img_height_real))))
 
             # Área de crop final
             area = (left, top, right, bottom)
@@ -123,10 +157,19 @@ class Crop:
                 cropped_image.save(buffered, format="JPEG")
                 img_bytes = buffered.getvalue()
                 img_base64 = base64.b64encode(img_bytes).decode("utf-8")
-
                 imagem.src_base64 = img_base64
                 imagem.update()
                 self.page.update()
+                image_data = base64.b64decode(img_base64)
+                image_pil = Image.open(io.BytesIO(image_data)).convert('RGB')
+                image_np = np.array(image_pil)
+
+                # Agora chamar a função
+                ocr(image_np)
+                #resetar crop
+                self.resetar_crop(slider_largura, slider_altura, gesture_detector)
+
+
             else:
                 print("Erro: Imagem cortada está vazia ou inválida.")
 

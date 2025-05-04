@@ -1,7 +1,10 @@
 import cv2
 import base64
+
+import selecao_tanques
 from crop2 import Crop
 import flet as ft
+
 
 
 
@@ -18,6 +21,37 @@ def verificar_imagem(page:ft.Page):
     capturas = []
     captura_em_andamento = True  # Variável para controlar o loop de captura
 
+    def ajustar_largura_area_de_corte(e):
+        nova_largura = float(e.control.value)
+
+        # Limite da direita da imagem (imagem começa em x = 10 por causa da margem)
+        limite_direita = crop.imagem_width + 10
+        largura_maxima = limite_direita - crop.left_area
+
+        # Aplicar limite
+        nova_largura = min(nova_largura, largura_maxima)
+
+        # Atualizar o crop
+        crop.largura_area_corte = nova_largura
+        gesture.content.width = nova_largura
+        gesture.content.update()
+
+
+
+    def ajustar_altura_area_de_corte(e):
+        nova_altura = float(e.control.value)
+
+        # Limite da direita da imagem (imagem começa em x = 10 por causa da margem)
+        limite_inferior = crop.imagem_height
+        altura_maxima = limite_inferior - crop.top_area
+
+        # Aplicar limite
+        nova_altura = min(nova_altura, altura_maxima)
+
+        # Atualizar o crop
+        crop.altura_area_corte = nova_altura
+        gesture.content.height = nova_altura
+        gesture.content.update()
 
     def capturar_camera(img_output):
 
@@ -97,6 +131,7 @@ def verificar_imagem(page:ft.Page):
             page.update()
 
 
+
     return ft.Container(
         visible=False,
         expand=True,
@@ -128,12 +163,49 @@ def verificar_imagem(page:ft.Page):
                                                                          bgcolor='pink',
                                                                          margin=ft.margin.only(left=10)),
                                                             gesture := crop.criar_gesture_detector()
+
                                                         ]
                                                     ),
-                                                    ft.Container(
+                                                    imagem_analisar:=ft.Container(
                                                         width=640, height=480, bgcolor=ft.Colors.PINK,
                                                         content=imagem_cortada
                                                     ),
+                                                ]
+                                            ),
+                                            ft.Row(
+                                                controls=[
+                                                    ft.Column(
+                                                        controls=[
+                                                            ft.Row(
+                                                                spacing=150,
+                                                                controls=[
+                                                                    ft.Text(value='ajustar altura',color=ft.Colors.WHITE),
+
+                                                                    ft.Text(value='ajustar lagura',color=ft.Colors.WHITE)
+                                                                ]
+
+                                                            ),
+                                                            ft.Row(
+
+                                                                controls=[
+                                                                    ajustar_altura_slider := ft.Slider(
+                                                                        min=10,
+                                                                        max=crop.imagem_height-crop.top if crop.top>0 else 480,
+                                                                        label='{value}%',
+                                                                        on_change=ajustar_altura_area_de_corte
+                                                                    ),
+                                                                    ajustar_largura_slider := ft.Slider(
+                                                                        min=10,
+                                                                        max=crop.imagem_width-crop.left if crop.left>0 else 640,
+                                                                        label='{value}%',
+                                                                        on_change=ajustar_largura_area_de_corte
+                                                                    )
+
+                                                                ]
+
+                                                            )
+                                                        ]
+                                                    )
                                                 ]
                                             ),
 
@@ -147,7 +219,7 @@ def verificar_imagem(page:ft.Page):
                                                                                      on_click=lambda
                                                                                          e: crop.crop_picture(
                                                                                          imagem_cortada,
-                                                                                         gesture)),
+                                                                                         gesture,ajustar_largura_slider,ajustar_altura_slider)),
                                                     capture_button := ft.ElevatedButton(icon=ft.Icons.CAMERA,
                                                                                         text="Tirar a foto",
                                                                                         on_click=lambda e: tirar_foto(
@@ -160,6 +232,7 @@ def verificar_imagem(page:ft.Page):
 
                                                 ]
                                             ),
+
                                         ]
                                     ),
 

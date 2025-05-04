@@ -2,6 +2,7 @@
 import flet as ft
 from selecao_tanques import selecao_tanques
 from verificacao_imagem import verificar_imagem
+from selecao_tanques import selecao_tanques
 
 
 def main(page: ft.Page):

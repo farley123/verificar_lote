@@ -2,7 +2,11 @@ import flet as ft
 import datetime
 from dateutil.relativedelta import relativedelta
 
-def selecao_tanques(page:ft.Page)->ft.Column:
+validade:str=''
+juliano:str=''
+fabricacao:str=''
+
+def selecao_tanques(page:ft.Page)->ft.Container:
     tanque_selecionado:str=''
     def clear():
         data_result.value = ''
@@ -27,10 +31,24 @@ def selecao_tanques(page:ft.Page)->ft.Column:
         validade_zero = data_atual + relativedelta(months=6)
         match produto:
             case '4%':
+                imagem_padrao.image.src='assets/produtos/moca_4.png'
+                imagem_padrao.update()
+                return datetime.date(day=1, month=validade_4.month, year=validade_4.year)
+            case 'moça 340':
+                imagem_padrao.image.src = 'assets/produtos/moca_340.png'
+                imagem_padrao.update()
+                return datetime.date(day=1, month=validade_4.month, year=validade_4.year)
+            case 'edição limitada':
+                imagem_padrao.image.src = 'assets/produtos/moca_395_edicao_limitada.png'
+                imagem_padrao.update()
                 return datetime.date(day=1, month=validade_4.month, year=validade_4.year)
             case 'light':
+                imagem_padrao.image.src = 'assets/produtos/moca_light.png'
+                imagem_padrao.update()
                 return datetime.date(day=1, month=validade_light.month, year=validade_light.year)
             case 'zero lactose':
+                imagem_padrao.image.src = 'assets/produtos/moca_zero.png'
+                imagem_padrao.update()
                 return datetime.date(day=validade_zero.day, month=validade_zero.month, year=validade_zero.year)
             case _:
                 return datetime.date(0, 0, 0)
@@ -56,7 +74,10 @@ def selecao_tanques(page:ft.Page)->ft.Column:
 
     def carregar_modelo(e):
         hoje = datetime.date.today()
-        validade: str = calcular_validade(produtos.value).strftime("%d %m %Y")
+        global  validade
+        global juliano
+        global fabricacao
+        validade = calcular_validade(produtos.value).strftime("%d %m %Y")
         juliano = f'{data.value}{planta.value}{digito.value}{lote.value}'
         fabricacao = f'F{hoje.strftime("%d %m %Y")} 00:00'
         # modelo = [validade, juliano, fabricacao]
@@ -173,17 +194,17 @@ def selecao_tanques(page:ft.Page)->ft.Column:
                 t901.text = 'Parado'
                 tanque_selecionado='T906'
                 page.update()
-
-    return ft.Column(
+    return ft.Container(
+        expand=True,
+        image=ft.DecorationImage(src='assets/fundo.png', fit=ft.ImageFit.COVER, opacity=0.5),
+        content=ft.Row(
 
                     visible=True,
                     expand=True,
+                    alignment=ft.MainAxisAlignment.SPACE_AROUND,
                     controls=[
-
                         ft.Container(
-                            expand=True,
                             padding=ft.padding.all(10),
-                            image=ft.DecorationImage(src='assets/fundo.png',fit=ft.ImageFit.COVER,opacity=0.5),
                             content=ft.Column(
                                 controls=[
                                     ft.Row(
@@ -214,6 +235,9 @@ def selecao_tanques(page:ft.Page)->ft.Column:
                                                     ft.DropdownOption(text='zero lactose'),
                                                     ft.DropdownOption(text='light'),
                                                     ft.DropdownOption(text='4%'),
+                                                    ft.DropdownOption(text='moça 340'),
+                                                    ft.DropdownOption(text='edição limitada'),
+
                                                 ]
                                             ),
                                             iniciar_modelo := ft.IconButton(
@@ -395,7 +419,11 @@ def selecao_tanques(page:ft.Page)->ft.Column:
 
                                                 ]
                                             ),
-                                            ft.Container(width=600,height=415,bgcolor=ft.Colors.RED)
+
+
+
+
+
 
 
                                         ]
@@ -438,7 +466,25 @@ def selecao_tanques(page:ft.Page)->ft.Column:
                                 ]
                             )
                         ),
+                        ft.Column(
+                            controls=[
+                                ft.Container(height=60),
+                                imagem_padrao:=ft.Container(
+                                    width=700, height=731,
+                                    bgcolor=ft.Colors.RED_900,
+                                    border_radius=10,
+                                    image=ft.DecorationImage(
+                                        src='assets/produtos/logo.png',
+                                        fit=ft.ImageFit.FILL,
+
+                                    )
+                                )
+                            ]
+                        )
+
 
                     ]
                 )
+    )
+
 
