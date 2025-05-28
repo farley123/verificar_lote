@@ -29,7 +29,7 @@ def remove_noise_and_enhance(image_array):
     sizes = stats[1:, -1]
 
     # Reduz o limite para evitar apagar caracteres
-    min_size = int((img.shape[0] * img.shape[1])*0.00001)
+    min_size = int((img.shape[0] * img.shape[1])*0.00002)
     cleaned_mask = np.zeros_like(inverted)
     for i in range(1, num_labels):
         if sizes[i - 1] >= min_size:
@@ -38,8 +38,15 @@ def remove_noise_and_enhance(image_array):
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1,1))
     reinforced = cv2.dilate(cleaned_mask, kernel, iterations=1)
 
+    kernel_dilate = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (1, 1))
+    dilated = cv2.dilate(reinforced, kernel_dilate, iterations=1)
 
-    pil_image = Image.fromarray(reinforced)
+    # === Fechamento para unir traços quebrados ===
+    kernel_close = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (1, 1))
+    closed = cv2.morphologyEx(dilated, cv2.MORPH_CLOSE, kernel_close, iterations=1)
+
+
+    pil_image = Image.fromarray(closed)
     enhanced_image = ImageEnhance.Contrast(pil_image).enhance(1.5)
 
 

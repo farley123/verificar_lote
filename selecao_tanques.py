@@ -1,12 +1,26 @@
 import flet as ft
 import datetime
 from dateutil.relativedelta import relativedelta
+import resultado_observable
 
-validade:str=''
-juliano:str=''
-fabricacao:str=''
+validade = resultado_observable.ResultadoObservable('')
+juliano = resultado_observable.ResultadoObservable('')
+fabricacao = resultado_observable.ResultadoObservable('')
 
 def selecao_tanques(page:ft.Page)->ft.Container:
+    def on_valor_alterado(_):
+        validade_result.value = validade.get()
+        data_result.value = juliano.get()
+        fabricacao_result.value = fabricacao.get()
+        page.update()
+
+
+        # Registrar os observadores (isso será executado uma única vez)
+
+    validade.subscribe(on_valor_alterado)
+    juliano.subscribe(on_valor_alterado)
+    fabricacao.subscribe(on_valor_alterado)
+
     tanque_selecionado:str=''
     def clear():
         data_result.value = ''
@@ -74,21 +88,20 @@ def selecao_tanques(page:ft.Page)->ft.Container:
 
     def carregar_modelo(e):
         hoje = datetime.date.today()
-        global  validade
-        global juliano
-        global fabricacao
-        validade = calcular_validade(produtos.value).strftime("%d %m %Y")
-        juliano = f'{data.value}{planta.value}{digito.value}{lote.value}'
-        fabricacao = f'F{hoje.strftime("%d %m %Y")} 00:00'
-        # modelo = [validade, juliano, fabricacao]
+        validade.set(calcular_validade(produtos.value).strftime("%d %m %Y"))
+        juliano.set(f'{data.value}{planta.value}{digito.value}{lote.value}')
+        fabricacao.set(f'F{hoje.strftime("%d %m %Y")} 00:00')
         # exibir dados:
-        validade_result.value = validade
-        data_result.value = juliano
-        fabricacao_result.value = fabricacao
+
+        validade_result.value = validade.get()
+        data_result.value = juliano.get()
+        fabricacao_result.value = fabricacao.get()
+
         # desabilitar seleção de digito e produto
         digito.disabled = True
         produtos.disabled = True
         page.update()
+
 
     def escolher_tanque(e):
         clear()
@@ -214,6 +227,7 @@ def selecao_tanques(page:ft.Page)->ft.Container:
                                                                    read_only=True),
                                             digito := ft.Dropdown(
                                                 label='digito',
+                                                disabled=True,
                                                 on_change=ativar_botao_carregar_modelo,
                                                 options=[
                                                     ft.DropdownOption(text=' '),
@@ -229,6 +243,7 @@ def selecao_tanques(page:ft.Page)->ft.Container:
 
                                             produtos := ft.Dropdown(
                                                 label='produto',
+                                                disabled=True,
                                                 on_change=ativar_botao_carregar_modelo,
                                                 options=[
                                                     ft.DropdownOption(text=' '),

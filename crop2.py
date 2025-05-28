@@ -25,27 +25,7 @@ class Crop:
         self.bottom=0
         self.top=0
 
-    def resetar_crop(self,slider_largura:ft.Slider,slider_altura:ft.Slider,gesture_detector:ft.GestureDetector):
-        self.left_area = 10
-        self.top_area = 10
-        self.largura_area_corte = 100
-        self.altura_area_corte = 100
 
-        gesture_detector.left = self.left_area
-        gesture_detector.top = self.top_area
-        gesture_detector.content.width = self.largura_area_corte
-        gesture_detector.content.height = self.altura_area_corte
-        gesture_detector.update()
-
-        slider_largura.max = self.imagem_width - self.left_area
-        slider_largura.value = self.largura_area_corte
-        slider_largura.update()
-
-        slider_altura.max = self.imagem_height - self.top_area
-        slider_altura.value = self.altura_area_corte
-        slider_altura.update()
-
-        self.page.update()
 
     def habilitar_crop(self,gesture:ft.GestureDetector):
         gesture.disabled=False,
@@ -109,11 +89,8 @@ class Crop:
 
         self.page.update()
 
-    def crop_picture(self, imagem: ft.Image, gesture_detector: ft.GestureDetector,slider_largura,slider_altura):
+    def crop_picture(self):
         try:
-            # Esconder temporariamente o componente de crop
-            gesture_detector.content.visible = True
-            self.page.update()
 
             # Aguarda a imagem original ser salva
             self.esperar_foto_ser_salva('foto_capturada.jpg', 2)
@@ -157,17 +134,18 @@ class Crop:
                 cropped_image.save(buffered, format="JPEG")
                 img_bytes = buffered.getvalue()
                 img_base64 = base64.b64encode(img_bytes).decode("utf-8")
-                imagem.src_base64 = img_base64
-                imagem.update()
-                self.page.update()
+                #imagem.src_base64 = img_base64
+                #imagem.update()
+                #self.page.update()
                 image_data = base64.b64decode(img_base64)
                 image_pil = Image.open(io.BytesIO(image_data)).convert('RGB')
                 image_np = np.array(image_pil)
 
                 # Agora chamar a função
                 ocr(image_np)
-                #resetar crop
-                self.resetar_crop(slider_largura, slider_altura, gesture_detector)
+
+
+
 
 
             else:
