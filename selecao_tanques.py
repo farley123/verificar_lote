@@ -90,7 +90,7 @@ def selecao_tanques(page:ft.Page)->ft.Container:
         hoje = datetime.date.today()
         validade.set(calcular_validade(produtos.value).strftime("%d %m %Y"))
         juliano.set(f'{data.value}{planta.value}{digito.value}{lote.value}')
-        fabricacao.set(f'F{hoje.strftime("%d %m %Y")} 00:00')
+        fabricacao.set(f'F{hoje.strftime("%d %m %Y")}')
         # exibir dados:
 
         validade_result.value = validade.get()

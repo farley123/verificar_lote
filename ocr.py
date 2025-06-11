@@ -39,4 +39,4 @@ def formatar_resultado(resultado):
     if len(resultado)==8:
         resultado[6]=f'{resultado[6]} {resultado[7]}'
         del resultado[7]
-    return f'{resultado[0]} {resultado[1]} {resultado[2]}\n{resultado[3]}\n{resultado[4]} {resultado[5]} {resultado[6]}'
+    return f'{resultado[0]} {resultado[1]} {resultado[2]}\n{resultado[3]}\n{resultado[4]} {resultado[5]} {resultado[6][0:5]}'
